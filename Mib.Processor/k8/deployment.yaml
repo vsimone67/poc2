@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mibprocessor
+  namespace: fac
+spec:
+  selector:
+    matchLabels:
+      app: mibprocessor
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mibprocessor
+    spec:
+      containers:
+        - name: mibprocessor-pod
+          image: vsimone67/mibprocessor:latest
+          imagePullPolicy: 'Always'
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: 'appdirectory'
+              value: '/app/settings/'
+          volumeMounts:
+            - name: configs
+              mountPath: '/app/settings'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 360
+      volumes:
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: appsettings-mibprocessor
+              - secret:
+                  name: appsettings-secret-mibprocessor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mibprocessor-svc
+  namespace: fac
+spec:
+  ports:
+    - name: web
+      port: 80
+  selector:
+    app: mibprocessor
+---
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: mibprocessor-route
+  namespace: fac
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`facpoc.prod`) && PathPrefix(`/mib/{catchall}`)
+      kind: Rule
+      services:
+        - name: mibprocessor-svc
+          port: 80
+    - match: Host(`facpoc.prod`) && PathPrefix(`/mibprocessor/health`)
+      kind: Rule
+      services:
+        - name: mibprocessor-svc
+          port: 80
+      middlewares:
+        - name: st-healthcheck
+    - match: Host(`facpoc.prod`) && PathPrefix(`/mibprocessor/metrics`)
+      kind: Rule
+      services:
+        - name: mibprocessor-svc
+          port: 80
+      middlewares:
+        - name: st-metrics

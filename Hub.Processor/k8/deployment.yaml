@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hubprocessor
+  namespace: fac
+spec:
+  selector:
+    matchLabels:
+      app: hubprocessor
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hubprocessor
+    spec:
+      containers:
+        - name: hubprocessor-pod
+          image: vsimone67/hubprocessor:latest
+          imagePullPolicy: 'Always'
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: 'appdirectory'
+              value: '/app/settings/'
+          volumeMounts:
+            - name: configs
+              mountPath: '/app/settings'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 360
+      volumes:
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: appsettings-hubprocessor
+              - secret:
+                  name: appsettings-secret-hubprocessor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hubprocessor-svc
+  namespace: fac
+spec:
+  ports:
+    - name: web
+      port: 80
+  selector:
+    app: hubprocessor
+---
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: hubprocessor-route
+  namespace: fac
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`facpoc.prod`) && PathPrefix(`/mibhub`)
+      kind: Rule
+      services:
+        - name: hubprocessor-svc
+          port: 80
+    - match: Host(`facpoc.prod`) && PathPrefix(`/facdecision`)
+      kind: Rule
+      services:
+        - name: hubprocessor-svc
+          port: 80
+    - match: Host(`facpoc.prod`) && PathPrefix(`/faccase`)
+      kind: Rule
+      services:
+        - name: hubprocessor-svc
+          port: 80 
+    - match: Host(`facpoc.prod`) && PathPrefix(`/hubprocessor/health`)
+      kind: Rule
+      services:
+        - name: hubprocessor-svc
+          port: 80
+      middlewares:
+        - name: st-healthcheck
+    - match: Host(`facpoc.prod`) && PathPrefix(`/hubprocessor/metrics`)
+      kind: Rule
+      services:
+        - name: hubprocessor-svc
+          port: 80
+      middlewares:
+        - name: st-metrics

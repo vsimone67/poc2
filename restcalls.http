@@ -1,0 +1,46 @@
+GET http://facpoc.prod/facservice/health
+###
+GET http://facpoc.prod/hubprocessor/health
+###
+GET http://facpoc.prod/casesprocessor/health
+###
+GET http://facpoc.prod/mibprocessor/health
+###
+GET http://facpoc.prod/correspondenceprocessor/health
+### MIB => HUB
+GET http://localhost:4000/fac/SubmitMib
+### Correspondence => Decision
+GET http://localhost:4000/fac/FacCaseDecision
+### Fac Case Processor => Case
+GET http://facpoc.prod/fac/SubmitCase
+
+###
+POST http://facpoc.prod/fac/PostMib 
+Content-Type: application/json
+
+{
+    "FirstName": "Joe",
+    "LastName": "Mope",
+    "Dob": "12/1/2000"
+}
+### Fac Case Processor => Case
+GET http://localhost:4003/fac/SubmitCase
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiR0FNRVJQQ1xcdnNpbW8iLCJleHAiOjE2MDM1NzEzMTksImlzcyI6IlhYWFgiLCJhdWQiOiJYWFhYIn0.b_iZz5GDLCg3vRSQGeQNvVWS7F8PV1AE9UfV-0RC824
+###
+http://localhost:4003/fac/FacCaseDecision
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiR0FNRVJQQ1xcdnNpbW8iLCJleHAiOjE2MDM2Mzc2ODksImlzcyI6IlhYWFgiLCJhdWQiOiJYWFhYIn0.LzFQgAVS4gqy69afhtZ8O2JfHFUTgeZs0JWXz0YQybI
+###
+GET http://facpoc.prod/mib/MyRoute
+###
+GET http://facpoc.prod/fac/Test
+###
+GET http://facpoc.prod/fac/Test2
+###
+GET http://facpoc.prod/mibhub
+
+###
+GET http://localhost:4007/fac/SubmitMib
+###
+GET http://localhost:4007/fac/health
+###
+GET http://localhost:4007/fac/metrics
