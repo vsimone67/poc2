@@ -62,19 +62,19 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`facpoc.prod`) && PathPrefix(`/mib/{catchall}`)
+    - match: PathPrefix(`/mib/{catchall}`)
       kind: Rule
       services:
         - name: mibprocessor-svc
           port: 80
-    - match: Host(`facpoc.prod`) && PathPrefix(`/mibprocessor/health`)
+    - match: PathPrefix(`/mibprocessor/health`)
       kind: Rule
       services:
         - name: mibprocessor-svc
           port: 80
       middlewares:
         - name: st-healthcheck
-    - match: Host(`facpoc.prod`) && PathPrefix(`/mibprocessor/metrics`)
+    - match: PathPrefix(`/mibprocessor/metrics`)
       kind: Rule
       services:
         - name: mibprocessor-svc

@@ -62,14 +62,14 @@ spec:
   entryPoints:
     - web
   routes:   
-    - match: Host(`facpoc.prod`) && PathPrefix(`/casesprocessor/health`)
+    - match: PathPrefix(`/casesprocessor/health`)
       kind: Rule
       services:
         - name: casesprocessor-svc
           port: 80
       middlewares:
         - name: st-healthcheck
-    - match: Host(`facpoc.prod`) && PathPrefix(`/casesprocessor/metrics`)
+    - match: PathPrefix(`/casesprocessor/metrics`)
       kind: Rule
       services:
         - name: casesprocessor-svc

@@ -62,22 +62,22 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`facpoc.prod`) && PathPrefix(`/mibhub`)
+    - match: PathPrefix(`/mibhub`)
       kind: Rule
       services:
         - name: hubprocessor-svc
           port: 80
-    - match: Host(`facpoc.prod`) && PathPrefix(`/facdecision`)
+    - match: PathPrefix(`/facdecision`)
       kind: Rule
       services:
         - name: hubprocessor-svc
           port: 80
-    - match: Host(`facpoc.prod`) && PathPrefix(`/faccase`)
+    - match: PathPrefix(`/faccase`)
       kind: Rule
       services:
         - name: hubprocessor-svc
           port: 80 
-    - match: Host(`facpoc.prod`) && PathPrefix(`/hubprocessor/health`)
+    - match: PathPrefix(`/hubprocessor/health`)
       kind: Rule
       services:
         - name: hubprocessor-svc

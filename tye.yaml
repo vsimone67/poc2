@@ -30,7 +30,7 @@ services:
     project: Case.Processor/Case.Processor.csproj
     bindings:
       - port: 4006
-  - name: reverseproxy
-    project: ReverseProxy/ReverseProxy.csproj
-    bindings:
-      - port: 4007
+  # - name: reverseproxy
+  #   project: ReverseProxy/ReverseProxy.csproj
+  #   bindings:
+  #     - port: 4007

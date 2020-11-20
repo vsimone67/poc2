@@ -62,19 +62,19 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`facpoc.prod`) && PathPrefix(`/correspondence/{catchall}`)
+    - match: PathPrefix(`/correspondence/{catchall}`)
       kind: Rule
       services:
         - name: correspondenceprocessor-svc
           port: 80
-    - match: Host(`facpoc.prod`) && PathPrefix(`/correspondenceprocessor/health`)
+    - match: PathPrefix(`/correspondenceprocessor/health`)
       kind: Rule
       services:
         - name: correspondenceprocessor-svc
           port: 80
       middlewares:
         - name: st-healthcheck
-    - match: Host(`facpoc.prod`) && PathPrefix(`/correspondenceprocessor/metrics`)
+    - match: PathPrefix(`/correspondenceprocessor/metrics`)
       kind: Rule
       services:
         - name: correspondenceprocessor-svc

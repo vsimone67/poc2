@@ -15,7 +15,7 @@ GET http://localhost:4000/fac/FacCaseDecision
 GET http://facpoc.prod/fac/SubmitCase
 
 ###
-POST http://facpoc.prod/fac/PostMib 
+POST http://192.168.86.235/fac/PostMib 
 Content-Type: application/json
 
 {

@@ -10,7 +10,7 @@ namespace Fac.Service.Extensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fac Service", Version = "v1" });
             });
 
             return services;
@@ -19,7 +19,7 @@ namespace Fac.Service.Extensions
         public static IApplicationBuilder UseOpenApi(this IApplicationBuilder builder)
         {
             builder.UseSwagger();
-            builder.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication1 v1"));
+            builder.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fac Service v1"));
             return builder;
         }
     }

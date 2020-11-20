@@ -62,19 +62,19 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`facpoc.prod`) && PathPrefix(`/fac/{catchall}`)
+    - match: PathPrefix(`/fac/{catchall}`)
       kind: Rule
       services:
         - name: facservice-svc
           port: 80
-    - match: Host(`facpoc.prod`) && PathPrefix(`/facservice/health`)
+    - match: PathPrefix(`/facservice/health`)
       kind: Rule
       services:
         - name: facservice-svc
           port: 80
       middlewares:
         - name: st-healthcheck
-    - match: Host(`facpoc.prod`) && PathPrefix(`/facservice/metrics`)
+    - match: PathPrefix(`/facservice/metrics`)
       kind: Rule
       services:
         - name: facservice-svc
