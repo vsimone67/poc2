@@ -14,7 +14,8 @@ namespace Fac.Service.Extensions
         public static IApplicationBuilder UserCorsPolicy(this IApplicationBuilder builder)
         {
             builder.UseCors(cors => cors
-                   .SetIsOriginAllowed((host) => true)
+                   //.SetIsOriginAllowed((host) => true)
+                   .WithOrigins("http://localhost:4200", "http://localhost:5000")
                    .AllowAnyMethod()
                    .AllowAnyHeader()
                    .AllowCredentials());

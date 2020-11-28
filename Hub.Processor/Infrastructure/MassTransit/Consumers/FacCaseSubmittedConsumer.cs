@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using FacCaseProcessor.Service.Infrastructure.MassTransit.Models;
+using Case.Processor.Infrastructure.MassTransit.Models;
 using Hub.Processor.Application.Hubs;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;

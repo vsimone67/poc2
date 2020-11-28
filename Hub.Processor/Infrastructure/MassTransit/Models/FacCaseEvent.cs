@@ -1,6 +1,6 @@
 using System;
 
-namespace FacCaseProcessor.Service.Infrastructure.MassTransit.Models
+namespace Case.Processor.Infrastructure.MassTransit.Models
 {
     public class FacCaseEvent
     {

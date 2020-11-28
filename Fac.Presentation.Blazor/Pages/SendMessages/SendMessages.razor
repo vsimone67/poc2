@@ -1,0 +1,23 @@
+﻿@page "/SendMessages"
+
+<Row>
+    <Column Margin="Margin.Is4.OnY">
+        <Card Margin="Margin.Is4.OnX">
+            <CardHeader>
+                <CardTitle>
+                    <div>Send Messages</div>
+                </CardTitle>
+            </CardHeader>
+            <CardBody>
+                <p>Submit Mib <Button Color="Color.Primary"
+                            Clicked="@SubmitMib">Submit</Button></p>
+                <p>Submit Decision <Button Color="Color.Primary"
+                            Clicked="@SubmitCaseDecision">Submit</Button></p>
+                <p>Submit Case <Button Color="Color.Primary"
+                            Clicked="@SubmitCase">Submit</Button></p>
+
+            </CardBody>
+
+        </Card>
+    </Column>
+</Row>

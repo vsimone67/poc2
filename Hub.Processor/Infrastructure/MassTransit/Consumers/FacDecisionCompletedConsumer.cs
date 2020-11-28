@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Correspondence.Service.Infrastructure.MassTransit.Models;
+using Correspondence.Processor.Infrastructure.MassTransit.Models;
 using Hub.Processor.Application.Hubs;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
@@ -11,11 +11,13 @@ namespace Hub.Processor.Extensions.MassTransit.Consumers
     {
         private readonly ILogger<FacDecisionCompletedConsumer> _logger;
         private readonly IHubContext<FacDecisionHub> _hubContext;
+
         public FacDecisionCompletedConsumer(ILogger<FacDecisionCompletedConsumer> logger, IHubContext<FacDecisionHub> hubContext)
         {
             _logger = logger;
             _hubContext = hubContext;
         }
+
         public async Task Consume(ConsumeContext<FacDecisionEvent> context)
         {
             _logger.LogDebug("Sending Message To Decision Hub");

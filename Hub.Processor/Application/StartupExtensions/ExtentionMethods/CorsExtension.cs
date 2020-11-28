@@ -16,7 +16,7 @@ namespace Hub.Processor.Extensions
         {
             builder.UseCors(cors => cors
                    //.SetIsOriginAllowed((host) => true)
-                   .WithOrigins("http://localhost:4200")
+                   .WithOrigins("http://localhost:4200", "http://localhost:5000", "http://localhost:55248")
                    //.AllowAnyOrigin()
                    .AllowAnyMethod()
                    .AllowAnyHeader()
