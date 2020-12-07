@@ -19,7 +19,10 @@ namespace Fac.Service.Extensions
         public static IApplicationBuilder UseOpenApi(this IApplicationBuilder builder)
         {
             builder.UseSwagger();
-            builder.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fac Service v1"));
+            builder.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fac Service v1");
+            });
             return builder;
         }
     }

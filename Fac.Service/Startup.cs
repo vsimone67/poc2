@@ -31,6 +31,7 @@ namespace Fac.Service
             services.AddDistributedTracing(Configuration);
             services.AddMassTransitRabbitMq();
             services.AddOpenApi();
+            services.AddHttpClientHandlers(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

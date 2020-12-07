@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Fac.Service.Application.Commands;
 using Fac.Service.Infrastructure.MassTransit.Models;
-using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
+using Fac.Service.Extensions;
 
 namespace Fac.Service
 {
@@ -17,11 +17,13 @@ namespace Fac.Service
     {
         private readonly IMediator _mediator;
         private readonly ILogger<FacController> _logger;
+        private readonly IMibService _mibService;
 
-        public FacController(IMediator mediator, ILogger<FacController> logger)
+        public FacController(IMediator mediator, ILogger<FacController> logger, IMibService mibService)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mibService = mibService ?? throw new ArgumentNullException(nameof(mibService)); ;
         }
 
         [HttpGet]
@@ -67,20 +69,37 @@ namespace Fac.Service
         [Route("Test")]
         public async Task<ActionResult> Test()
         {
+            // int retries = 1;
+            // var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
+            //   retryCount: 3, // Retry 3 times
+            //   sleepDurationProvider: attempt => TimeSpan.FromMilliseconds(1000 * ((attempt == 0) ? 1 : attempt)), // Wait 200ms between each try.
+            //   onRetry: (exception, calculatedWaitDuration) => // Capture some info for logging!
+            //   {
+            //       _logger.LogError($" Error Submitting Case: {exception.Message}, retrying: {retries} of {3} Date {DateTime.Now}");
+            //       retries++;
+            //   });
 
-            HttpStatusCode returncode;
-            var client = new HttpClient();
+            // CancellationTokenSource source = new CancellationTokenSource();
+            // await retryPolicy.ExecuteAsync(async token =>
+            //     {
+            //         HttpStatusCode returncode;
+            //         var client = new HttpClient();
 
-            var result = await client.GetAsync("http://mibprocessor-svc/mib/MyRoute");
+            //         var result = await client.GetAsync("http://mibprocessor-svc/mib/MyRoute");
 
-            // Ensure we have a Success Status Code
-            result.EnsureSuccessStatusCode();
+            //         // Ensure we have a Success Status Code
+            //         result.EnsureSuccessStatusCode();
 
-            // Read Response Content (this will usually be JSON content)
-            var content = await result.Content.ReadAsStringAsync();
+            //         // Read Response Content (this will usually be JSON content)
+            //         var content = await result.Content.ReadAsStringAsync();
 
-            returncode = result.StatusCode;
-            return Ok(content);
+            //         returncode = result.StatusCode;
+            //         return Ok(content);
+            //     }, source.Token).ConfigureAwait(false);
+            // return Ok();
+
+            var result = await _mibService.GetMibRouteData();
+            return Ok(result);
         }
 
         [HttpGet]
