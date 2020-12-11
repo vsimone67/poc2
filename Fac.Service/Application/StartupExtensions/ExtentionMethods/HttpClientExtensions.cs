@@ -18,8 +18,7 @@ namespace Fac.Service.Extensions
             {
                 var logger = serviceProvider.GetService<ILoggerFactory>();
 
-                //https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
-                //services.AddHttpClient<IHttpClientWrapper, HttpClientWrapper>().AddPolicyHandler(GetRetryPolicy(3, logger.CreateLogger("httpclient")));
+                //https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests                
                 services.AddHttpClient<IMibService, MibService>(client =>
                 {
                     client.BaseAddress = new Uri("http://mibprocessor-svc/mib/");
@@ -34,9 +33,9 @@ namespace Fac.Service.Extensions
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(numberOfRetries, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), onRetry: (exception, calculatedWaitDuration) =>
+                .WaitAndRetryAsync(numberOfRetries, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), onRetry: (response, calculatedWaitDuration) =>
                 {
-                    //logger.LogError($"Retry Policy Executed => {exception.Exception.Message}");
+                    logger.LogError($"Retry Policy Executed => {response.Exception.Message}");
                 });
         }
 
@@ -73,19 +72,15 @@ namespace Fac.Service.Extensions
             if (!string.IsNullOrEmpty(BaseAddress))
                 _httpClient.BaseAddress = new Uri(BaseAddress);
 
-            var responseString = await _httpClient.GetStringAsync(url);
+            var response = await _httpClient.GetAsync(url);
+
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(responseString);
+
 
         }
 
-        // public async Task PostData<T>(string url, T model)
-        // {
-        //     if (!string.IsNullOrEmpty(BaseAddress))
-        //         _httpClient.BaseAddress = new Uri(BaseAddress);
-
-        //     var responseString = await _httpClient.PostAsync(url,model);
-        //     return JsonConvert.DeserializeObject<T>(responseString);
-        // }
     }
 
     public interface IMibService
@@ -103,13 +98,10 @@ namespace Fac.Service.Extensions
 
         public async Task<string> GetMibRouteData()
         {
-
             var responseString = await _httpClient.GetStringAsync("MyRoute");
 
             return JsonConvert.DeserializeObject<string>(responseString);
 
         }
     }
-
-
 }
