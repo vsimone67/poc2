@@ -1,0 +1,39 @@
+@page "/counter"
+@inject NotificationService NotificationService
+
+<div>
+    <RadzenFieldset AllowCollapse="false"
+                    Style="width:99%;margin-bottom: 10px; height:98%;">
+        <HeaderTemplate>
+            <span style="float:left;">
+                <h1>Counter</h1>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+
+            <p>Current count: @currentCount</p>
+
+            <RadzenButton Click=@(args
+                          =>
+                          IncrementCount())
+                          ButtonStyle="ButtonStyle.Light">Click Me</RadzenButton>
+        </ChildContent>
+    </RadzenFieldset>
+</div>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        NotificationService.Notify(new NotificationMessage
+        {
+            Style = "margin-bottom:5px; position: absolute; top: -100px; ",
+            Severity = NotificationSeverity.Info,
+            Summary = "",
+            Detail = "Success Detail",
+            Duration = 4000
+        });
+        currentCount++;
+    }
+}

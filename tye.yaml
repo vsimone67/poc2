@@ -34,7 +34,11 @@ services:
   #   project: ReverseProxy/ReverseProxy.csproj
   #   bindings:
   #     - port: 4007
-  # - name: facui
-  #   project: Fac.Presentation.Blazor/Fac.Presentation.Blazor.csproj
-  #   bindings:
-  #     - port: 5000
+  - name: facui
+    project: Fac.Presentation.Blazor/Fac.Presentation.Blazor.csproj
+    bindings:
+      - port: 5000
+  - name: facui2
+    project: Fac.Presentation.Blazor2/Fac.Presentation.Blazor2.csproj
+    bindings:
+      - port: 5005

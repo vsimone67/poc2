@@ -1,0 +1,27 @@
+@inherits LayoutComponentBase
+
+<div class="nav-header">
+    <NavMenu />
+</div>
+<div class="container-fluid content-data p-0">
+    <BreadCrumb BreadCrumbs="AppBreadCrumbs" />
+    <RadzenNotification />
+    <RadzenDialog />
+    <RadzenTooltip />
+
+    @Body
+</div>
+
+@code
+{
+    List<BreadCrumbItem> AppBreadCrumbs = new List<BreadCrumbItem>();
+
+    protected override void OnInitialized()
+    {
+        // Add breadcrumbs
+        AppBreadCrumbs.Add(new BreadCrumbItem() { Name = "Counter", Uri = "/counter", ParentUri = string.Empty });
+        AppBreadCrumbs.Add(new BreadCrumbItem() { Name = "Fetch Data", Uri = "/fetchdata", ParentUri = string.Empty });
+
+        base.OnInitialized();
+    }
+}

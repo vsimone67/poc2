@@ -1,0 +1,9 @@
+﻿<div class="breadcrumb-background">
+    @foreach (var item in _items)
+    {
+        <RadzenLink style="text-decoration: none;"
+                    Path="@item.Uri"
+                    Text="@item.Name"
+                    Icon="@item.Icon" />
+    }
+</div>
