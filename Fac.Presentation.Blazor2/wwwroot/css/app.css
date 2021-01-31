@@ -17,34 +17,20 @@
   top: 0.5rem;
 }
 
-.nav-header {
-  height: 7vh;
-  background: linear-gradient(#00304c, #168b9f);
-}
-
-.nav-text-color {
-  color: white;
-  background-color: white;
-}
-
-.menu:not(.profile-menu) .navigation-item-link {
-  color: white;
-  white-space: nowrap;
-}
-
+/* Main Program Body */
 body {
   margin: 0;
   padding: 0;
   font-family: Lato;
 }
 
-/* left justify panel title */
-.ui-panel-titlebar {
-  display: contents;
-  justify-content: space-between;
+/* For Nav Menu */
+.nav-header {
+  height: 7vh;
+  background: linear-gradient(#00304c, #168b9f);
 }
 
-.breadcrumb-background {
-  height: 3vh;
-  background: lightgrey;
+.menu:not(.profile-menu) .navigation-item-link {
+  color: white;
+  white-space: nowrap;
 }
