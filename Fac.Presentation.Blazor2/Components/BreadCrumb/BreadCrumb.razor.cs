@@ -8,13 +8,17 @@ namespace Fac.Presentation.Blazor2.Components.BreadCrumb
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public List<BreadCrumbItem> BreadCrumbs { get; set; }
 
         private List<BreadCrumbItem> _items;
 
+        public string BreadCrumbSeparator { get; set; }
+
         protected override void OnInitialized()
         {
+            BreadCrumbSeparator = ">";
             _items = new List<BreadCrumbItem>();
             _items.Add(new BreadCrumbItem() { Uri = "/", Name = "", Icon = "home", ParentUri = string.Empty });
             NavigationManager.LocationChanged += OnLocationChanged;
@@ -35,7 +39,10 @@ namespace Fac.Presentation.Blazor2.Components.BreadCrumb
                 }
 
                 if (location != "/")
-                    _items.Add(new BreadCrumbItem() { Uri = args.Location, Name = $" / {breadCrumb.Name}" });
+                {
+                    _items.Add(new BreadCrumbItem() { Uri = "/", Name = "", Icon = "keyboard_arrow_right", ParentUri = string.Empty });  // add separator
+                    _items.Add(new BreadCrumbItem() { Uri = args.Location, Name = $"{breadCrumb.Name}" });  // add breadcrumb
+                }
 
                 StateHasChanged();
             }
